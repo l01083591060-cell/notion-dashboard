@@ -1,0 +1,9 @@
+{
+  "name": "notion-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@notionhq/client": "^5.1.0"
+  }
+}
