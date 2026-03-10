@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>노션 대시보드</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif;
+      background: #fffafb;
+      color: #4d3d44;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #ffeaf2 0%, #fffefe 100%);
+      border: 1px solid #ffdbe7;
+      border-radius: 28px;
+      padding: 24px;
+      margin-bottom: 18px;
+      box-shadow: 0 10px 30px rgba(247, 198, 217, 0.18);
+    }
+
+    .title-input-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .title-input {
+      flex: 1;
+      min-width: 220px;
+      border: 1px solid #ffdce8;
+      background: #fff;
+      border-radius: 14px;
+      padding: 12px 14px;
+      outline: none;
+      font-size: 15px;
+      color: #4d3d44;
+      font-weight: 700;
+    }
+
+    .title {
+      font-size: 30px;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      margin-bottom: 8px;
+      word-break: break-word;
+    }
+
+    .sub {
+      font-size: 14px;
+      color: #8d727d;
+      line-height: 1.6;
+    }
+
+    .top-row {
+      margin-top: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .top-pill {
+      background: #fff7fa;
+      border: 1px solid #ffdbe7;
+      color: #c57798;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: #ffffff;
+      border: 1px solid #ffe2ec;
+      border-radius: 24px;
+      padding: 16px;
+      min-height: 250px;
+      box-shadow: 0 8px 24px rgba(255, 220, 232, 0.14);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .card h3 {
+      font-size: 17px;
+      font-weight: 800;
+      color: #5d4650;
+      letter-spacing: -0.02em;
+    }
+
+    .tag {
+      display: inline-flex;
+      width: fit-content;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #fff5f8;
+      border: 1px solid #ffdce8;
+      color: #c57b99;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+      overflow: auto;
+      min-height: 80px;
+    }
+
+    .item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #fff8fb;
+      border: 1px solid #ffe1eb;
+      border-radius: 14px;
+      padding: 10px 12px;
+    }
+
+    .item.done span {
+      text-decoration: line-through;
+      color: #af95a0;
+    }
+
+    .item input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: #f2a7c4;
+      flex-shrink: 0;
+    }
+
+    .item span {
+      font-size: 14px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    .empty {
+      color: #a28a94;
+      font-size: 13px;
+      background: #fff8fb;
+      border: 1px dashed #ffdce8;
+      border-radius: 14px;
+      padding: 12px;
+    }
+
+    .add-row {
+      display: flex;
+      gap: 8px;
+      margin-top: auto;
+    }
+
+    .add-row input {
+      flex: 1;
+      border: 1px solid #ffdce8;
+      background: #fff;
+      border-radius: 14px;
+      padding: 11px 12px;
+      outline: none;
+      font-size: 14px;
+      color: #4d3d44;
+    }
+
+    .btn {
+      border: 0;
+      cursor: pointer;
+      background: #f7c6d9;
+      color: #fff;
+      border-radius: 14px;
+      padding: 11px 14px;
+      font-weight: 800;
+      font-size: 14px;
+      transition: 0.18s ease;
+      white-space: nowrap;
+    }
+
+    .btn:hover {
+      background: #f2adc8;
+    }
+
+    .calendar-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #7d626e;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .week {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+      text-align: center;
+      font-size: 12px;
+      color: #b08c9d;
+      margin-top: 6px;
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .day {
+      aspect-ratio: 1 / 1;
+      border-radius: 12px;
+      background: #fff8fb;
+      border: 1px solid #ffe2ec;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      color: #634c57;
+    }
+
+    .day.empty {
+      background: transparent;
+      border: none;
+    }
+
+    .day.today {
+      background: #f7c6d9;
+      color: #fff;
+      border-color: #f7c6d9;
+      font-weight: 800;
+    }
+
+    .playlist-box {
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid #ffe2ec;
+      min-height: 170px;
+      background: #fff8fb;
+    }
+
+    .playlist-box iframe {
+      width: 100%;
+      height: 170px;
+      border: 0;
+      display: block;
+    }
+
+    .memo-box {
+      flex: 1;
+      border: 1px solid #ffe2ec;
+      background: #fff8fb;
+      border-radius: 16px;
+      padding: 14px;
+      line-height: 1.7;
+      color: #79616c;
+      white-space: pre-wrap;
+      resize: none;
+      outline: none;
+      font-size: 14px;
+    }
+
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    .photo {
+      aspect-ratio: 1.25 / 1;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #ffe5ef, #fffdfd);
+      border: 1px solid #ffdce8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #b08b9b;
+      font-size: 13px;
+      text-align: center;
+      padding: 10px;
+    }
+
+    .dday-wrap {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: auto;
+    }
+
+    .mini-box {
+      flex: 1;
+      min-width: 110px;
+      background: #fff8fb;
+      border: 1px solid #ffe2ec;
+      border-radius: 16px;
+      padding: 12px;
+    }
+
+    .mini-label {
+      color: #b08998;
+      font-size: 12px;
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
+
+    .mini-value {
+      font-size: 18px;
+      font-weight: 800;
+      color: #6b525d;
+    }
+
+    .small-note {
+      font-size: 12px;
+      color: #ab8f9b;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 980px) {
+      .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 620px) {
+      body { padding: 14px; }
+      .grid { grid-template-columns: 1fr; }
+      .title { font-size: 24px; }
+      .title-input-row { flex-direction: column; align-items: stretch; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <section class="header">
+      <div class="title-input-row">
+        <input
+          type="text"
+          id="dashboardTitleInput"
+          class="title-input"
+          placeholder="대시보드 이름 입력"
+        />
+        <button class="btn" id="saveTitleBtn">제목 저장</button>
+      </div>
+
+      <div class="title" id="dashboardTitle">노션 대시보드</div>
+      <div class="sub" id="todayText">로딩 중...</div>
+
+      <div class="top-row">
+        <div class="top-pill">연핑크 + 하양</div>
+        <div class="top-pill">Notion Sync</div>
+        <div class="top-pill">iPhone / iPad 대응</div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <article class="card" data-category="독서노트">
+        <h3>독서노트</h3>
+        <span class="tag">Notion Sync</span>
+        <div class="list"></div>
+        <div class="add-row">
+          <input type="text" placeholder="읽을 책 / 기록 추가" />
+          <button class="btn">추가</button>
+        </div>
+      </article>
+
+      <article class="card" data-category="감정일기">
+        <h3>감정일기</h3>
+        <span class="tag">Notion Sync</span>
+        <div class="list"></div>
+        <div class="add-row">
+          <input type="text" placeholder="오늘 감정 한 줄" />
+          <button class="btn">추가</button>
+        </div>
+      </article>
+
+      <article class="card" data-category="가계부">
+        <h3>가계부</h3>
+        <span class="tag">Notion Sync</span>
+        <div class="list"></div>
+        <div class="add-row">
+          <input type="text" placeholder="지출 / 수입 메모" />
+          <button class="btn">추가</button>
+        </div>
+      </article>
+
+      <article class="card" data-category="오답노트">
+        <h3>오답노트</h3>
+        <span class="tag">Notion Sync</span>
+        <div class="list"></div>
+        <div class="add-row">
+          <input type="text" placeholder="틀린 개념 추가" />
+          <button class="btn">추가</button>
+        </div>
+      </article>
+
+      <article class="card" data-category="스터디">
+        <h3>스터디 플래너</h3>
+        <span class="tag">Notion Sync</span>
+        <div class="list"></div>
+        <div class="add-row">
+          <input type="text" placeholder="오늘 공부할 것" />
+          <button class="btn">추가</button>
+        </div>
+      </article>
+
+      <article class="card" data-category="식단">
+        <h3>식단 관리</h3>
+        <span class="tag">Notion Sync</span>
+        <div class="list"></div>
+        <div class="add-row">
+          <input type="text" placeholder="먹은 것 / 식단 계획" />
+          <button class="btn">추가</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <h3>달력</h3>
+        <div class="calendar-head">
+          <span id="monthLabel"></span>
+          <span class="tag">Today</span>
+        </div>
+        <div class="week">
+          <div>일</div><div>월</div><div>화</div><div>수</div><div>목</div><div>금</div><div>토</div>
+        </div>
+        <div class="calendar-grid" id="calendarGrid"></div>
+      </article>
+
+      <article class="card">
+        <h3>플레이리스트</h3>
+        <span class="tag">YouTube</span>
+        <div class="add-row" style="margin-top: 0;">
+          <input type="text" id="playlistInput" placeholder="유튜브 플레이리스트 링크 붙여넣기" />
+          <button class="btn" id="savePlaylistBtn">저장</button>
+        </div>
+        <div class="playlist-box">
+          <iframe
+            id="playlistFrame"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <div class="small-note">플레이리스트 주소만 넣고 저장 누르면 바로 바뀜</div>
+      </article>
+
+      <article class="card">
+        <h3>메모 / 사진</h3>
+        <textarea class="memo-box" id="memoBox" placeholder="좋아하는 문장, 오늘 목표, 짧은 일기"></textarea>
+        <div class="add-row" style="margin-top: 0;">
+          <button class="btn" id="saveMemoBtn">메모 저장</button>
+        </div>
+
+        <div class="photo-grid">
+          <div class="photo">사진 자리 1</div>
+          <div class="photo">사진 자리 2</div>
+          <div class="photo">사진 자리 3</div>
+          <div class="photo">사진 자리 4</div>
+        </div>
+
+        <div class="dday-wrap">
+          <div class="mini-box">
+            <div class="mini-label">Today</div>
+            <div class="mini-value" id="todayMini">-</div>
+          </div>
+          <div class="mini-box">
+            <div class="mini-label">D-day</div>
+            <div class="mini-value" id="ddayMini">-</div>
+          </div>
+        </div>
+      </article>
+    </section>
+  </div>
+
+  <script>
+    const API_URL = "/api/notion";
+    const CATEGORIES = ["독서노트", "감정일기", "가계부", "오답노트", "스터디", "식단"];
+    const today = new Date();
+
+    function setHeaderDate() {
+      const text = today.toLocaleDateString("ko-KR", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        weekday: "long"
+      });
+      document.getElementById("todayText").textContent = text;
+      document.getElementById("todayMini").textContent = `${today.getMonth() + 1}/${today.getDate()}`;
+    }
+
+    function initDashboardTitle() {
+      const input = document.getElementById("dashboardTitleInput");
+      const title = document.getElementById("dashboardTitle");
+      const button = document.getElementById("saveTitleBtn");
+
+      const savedTitle = localStorage.getItem("dashboard_title") || "노션 대시보드";
+
+      input.value = savedTitle;
+      title.textContent = savedTitle;
+      document.title = savedTitle;
+
+      button.addEventListener("click", () => {
+        const newTitle = input.value.trim() || "노션 대시보드";
+        localStorage.setItem("dashboard_title", newTitle);
+        title.textContent = newTitle;
+        document.title = newTitle;
+        alert("제목 저장됨");
+      });
+
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") button.click();
+      });
+    }
+
+    function renderCalendar() {
+      const year = today.getFullYear();
+      const month = today.getMonth();
+
+      document.getElementById("monthLabel").textContent =
+        `${year}.${String(month + 1).padStart(2, "0")}`;
+
+      const firstDay = new Date(year, month, 1).getDay();
+      const lastDate = new Date(year, month + 1, 0).getDate();
+
+      const grid = document.getElementById("calendarGrid");
+      grid.innerHTML = "";
+
+      for (let i = 0; i < firstDay; i++) {
+        const empty = document.createElement("div");
+        empty.className = "day empty";
+        grid.appendChild(empty);
+      }
+
+      for (let d = 1; d <= lastDate; d++) {
+        const cell = document.createElement("div");
+        cell.className = "day";
+        cell.textContent = d;
+        if (d === today.getDate()) cell.classList.add("today");
+        grid.appendChild(cell);
+      }
+    }
+
+    function setDday() {
+      const target = new Date("2026-12-31");
+      const diff = Math.ceil((target - today) / (1000 * 60 * 60 * 24));
+      const text = diff > 0 ? `D-${diff}` : diff === 0 ? "D-Day" : `D+${Math.abs(diff)}`;
+      document.getElementById("ddayMini").textContent = text;
+    }
+
+    function extractPlaylistId(url) {
+      if (!url) return "";
+      try {
+        const parsed = new URL(url);
+        if (parsed.hostname.includes("youtube.com")) {
+          return parsed.searchParams.get("list") || "";
+        }
+        return "";
+      } catch {
+        return "";
+      }
+    }
+
+    function setPlaylistFrame(playlistId) {
+      const frame = document.getElementById("playlistFrame");
+      if (!playlistId) {
+        frame.srcdoc = `
+          <body style="margin:0;display:flex;align-items:center;justify-content:center;height:100%;font-family:sans-serif;background:#fff8fb;color:#b08b9b;">
+            플레이리스트 링크를 넣어줘
+          </body>
+        `;
+        return;
+      }
+      frame.src = `https://www.youtube.com/embed/videoseries?list=${playlistId}`;
+    }
+
+    function initPlaylist() {
+      const input = document.getElementById("playlistInput");
+      const button = document.getElementById("savePlaylistBtn");
+
+      const savedUrl = localStorage.getItem("dashboard_playlist_url") || "";
+      const savedId = extractPlaylistId(savedUrl);
+
+      input.value = savedUrl;
+      setPlaylistFrame(savedId);
+
+      button.addEventListener("click", () => {
+        const url = input.value.trim();
+        const playlistId = extractPlaylistId(url);
+
+        if (!playlistId) {
+          alert("유튜브 플레이리스트 링크를 넣어줘");
+          return;
+        }
+
+        localStorage.setItem("dashboard_playlist_url", url);
+        setPlaylistFrame(playlistId);
+        alert("플레이리스트 저장됨");
+      });
+
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") button.click();
+      });
+    }
+
+    function initMemo() {
+      const memoBox = document.getElementById("memoBox");
+      const saveMemoBtn = document.getElementById("saveMemoBtn");
+
+      const saved = localStorage.getItem("dashboard_memo") || "";
+      memoBox.value = saved;
+
+      saveMemoBtn.addEventListener("click", () => {
+        localStorage.setItem("dashboard_memo", memoBox.value);
+        alert("메모 저장됨");
+      });
+    }
+
+    function renderCategory(category, items) {
+      const card = document.querySelector(`[data-category="${category}"]`);
+      if (!card) return;
+
+      const list = card.querySelector(".list");
+      list.innerHTML = "";
+
+      const filtered = items
+        .filter((item) => item.category === category)
+        .sort((a, b) => (a.order || 999) - (b.order || 999));
+
+      if (!filtered.length) {
+        const empty = document.createElement("div");
+        empty.className = "empty";
+        empty.textContent = "아직 없음";
+        list.appendChild(empty);
+        return;
+      }
+
+      filtered.forEach((item) => {
+        const row = document.createElement("label");
+        row.className = "item" + (item.done ? " done" : "");
+        row.innerHTML = `
+          <input type="checkbox" ${item.done ? "checked" : ""} />
+          <span>${escapeHtml(item.name)}</span>
+        `;
+
+        const checkbox = row.querySelector("input");
+        checkbox.addEventListener("change", async () => {
+          const res = await fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              action: "toggle",
+              id: item.id,
+              done: checkbox.checked
+            })
+          });
+
+          const data = await res.json();
+          if (!data.ok) {
+            alert("체크 업데이트 실패");
+            return;
+          }
+
+          await loadTasks();
+        });
+
+        list.appendChild(row);
+      });
+    }
+
+    function bindAddButtons() {
+      document.querySelectorAll(".card[data-category]").forEach((card) => {
+        const category = card.dataset.category;
+        const input = card.querySelector("input[type='text']");
+        const button = card.querySelector(".btn");
+
+        const submit = async () => {
+          const name = input.value.trim();
+          if (!name) return;
+
+          button.disabled = true;
+
+          const res = await fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              action: "add",
+              name,
+              category
+            })
+          });
+
+          const data = await res.json();
+          button.disabled = false;
+
+          if (!data.ok) {
+            alert("추가 실패");
+            return;
+          }
+
+          input.value = "";
+          await loadTasks();
+        };
+
+        button.addEventListener("click", submit);
+        input.addEventListener("keydown", (e) => {
+          if (e.key === "Enter") submit();
+        });
+      });
+    }
+
+    async function loadTasks() {
+      const res = await fetch(API_URL);
+      const data = await res.json();
+
+      if (!data.ok) {
+        console.error(data.error);
+        return;
+      }
+
+      CATEGORIES.forEach((category) => renderCategory(category, data.tasks));
+    }
+
+    function escapeHtml(text) {
+      return text
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    setHeaderDate();
+    initDashboardTitle();
+    renderCalendar();
+    setDday();
+    bindAddButtons();
+    initPlaylist();
+    initMemo();
+    loadTasks();
+  </script>
+</body>
+</html>
