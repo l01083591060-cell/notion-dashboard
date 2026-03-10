@@ -297,20 +297,33 @@
       font-weight: 800;
     }
 
-    .playlist-box {
-      border-radius: 18px;
-      overflow: hidden;
-      border: 1px solid #ffe2ec;
-      min-height: 0;
+    .player-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
       flex: 1;
-      background: #fff8fb;
+      min-height: 0;
     }
 
-    .playlist-box iframe {
+    .player-bar {
+      background: #fff8fb;
+      border: 1px solid #ffe2ec;
+      border-radius: 18px;
+      padding: 12px;
+    }
+
+    .player-label {
+      font-size: 13px;
+      color: #8d727d;
+      margin-bottom: 8px;
+    }
+
+    .player-frame {
       width: 100%;
-      height: 100%;
-      min-height: 140px;
+      height: 84px;
       border: 0;
+      border-radius: 12px;
+      background: #fff8fb;
       display: block;
     }
 
@@ -328,27 +341,6 @@
       outline: none;
       font-size: 14px;
       overflow-y: auto;
-    }
-
-    .photo-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 8px;
-      flex-shrink: 0;
-    }
-
-    .photo {
-      aspect-ratio: 1.25 / 1;
-      border-radius: 16px;
-      background: linear-gradient(135deg, #ffe5ef, #fffdfd);
-      border: 1px solid #ffdce8;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #b08b9b;
-      font-size: 13px;
-      text-align: center;
-      padding: 10px;
     }
 
     .dday-wrap {
@@ -490,34 +482,31 @@
       </article>
 
       <article class="card">
-        <h3>플레이리스트</h3>
-        <span class="tag">YouTube</span>
+        <h3>플레이어</h3>
         <div class="add-row">
           <input type="text" id="playlistInput" placeholder="유튜브 플레이리스트 링크 붙여넣기" />
           <button class="btn" id="savePlaylistBtn">저장</button>
         </div>
-        <div class="playlist-box">
-          <iframe
-            id="playlistFrame"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen>
-          </iframe>
+
+        <div class="player-wrap">
+          <div class="player-bar">
+            <div class="player-label">재생바만 표시</div>
+            <iframe
+              id="playlistFrame"
+              class="player-frame"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen>
+            </iframe>
+          </div>
+          <div class="small-note">곡명 자동 표시는 안 넣고, 재생바 느낌만 남김</div>
         </div>
-        <div class="small-note">링크만 바꾸면 됨</div>
       </article>
 
       <article class="card">
-        <h3>메모 / 사진</h3>
+        <h3>메모</h3>
         <textarea class="memo-box" id="memoBox" placeholder="좋아하는 문장, 오늘 목표, 짧은 일기"></textarea>
         <div class="add-row">
           <button class="btn" id="saveMemoBtn">메모 저장</button>
-        </div>
-
-        <div class="photo-grid">
-          <div class="photo">사진 자리 1</div>
-          <div class="photo">사진 자리 2</div>
-          <div class="photo">사진 자리 3</div>
-          <div class="photo">사진 자리 4</div>
         </div>
 
         <div class="dday-wrap">
